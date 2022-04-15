@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <%- include("../partials/bootstrapHead.ejs")  %>
+</head>
+
+<body>
+  <main>
+    <div class="logout">
+      <h2>Hasta luego, <%= username %> </h2>
+      <a class="btn btn-success" href="/">Serás redirigido al inicio en <span id=seconds></span> seg</a>
+    </div>
+  </main>
+  <script src="/js/logout.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <%- include("../partials/bootstrapHead.ejs")  %>
+</head>
+
+<body>
+  <main class="error-wrapper">
+    <h1 class="text-center">Error de Login</h1>
+    <% if (error&&error.length>0) { %>
+    <p><%= error %></p>
+    <% } else { %>
+    <p>Algo salió mal durante el proceso de logueo.</p>
+    <p>Por favor, vuelva a intentarlo</p>
+    <% } %>
+    <a href="/login" class="btn btn-light mt-4">Volver</a>
+  </main>
+</body>
+
+</html>

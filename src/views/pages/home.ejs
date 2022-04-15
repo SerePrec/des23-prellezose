@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <%- include("../partials/bootstrapHead.ejs")  %>
+</head>
+
+<body>
+  <main class="cargar">
+    <div class="welcome">
+      <h3>Bienvenido/a, <span><%= username %></span></h3>
+      <button id="btn-logout" class="btn btn-warning">Logout</button>
+    </div>
+    <% if (successRegister&&successRegister.length>0) { %>
+    <div class="alert alert-primary alert-dismissible fade show d-flex align-items-center successRegister" role="alert">
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
+        class="bi check-circle-fill flex-shrink-0 me-2" viewBox="0 0 16 16" role="img" aria-label="Success:">
+        <path
+          d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+      </svg>
+      <div>
+        <%= successRegister %>
+      </div>
+      <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+    <% } %>
+    <div class="form-wrapper">
+      <h2>CARGAR PRODUCTO</h2>
+      <form id="productForm">
+        <div class="mb-3">
+          <label for="inputTitle" class="form-label">Título</label>
+          <input type="text" class="form-control" id="inputTitle" name="title" maxlength="50">
+        </div>
+        <div class="mb-3">
+          <label for="inputPrice" class="form-label">Precio</label>
+          <input type="text" class="form-control" id="inputPrice" name="price">
+        </div>
+        <div class="mb-3">
+          <label for="inputThumbnail" class="form-label">URL de la imágen</label>
+          <input type="text" class="form-control" id="inputThumbnail" name="thumbnail" maxlength="1024">
+        </div>
+        <button type="submit" class="btn btn-danger">CARGAR</button>
+      </form>
+    </div>
+    <div id="productErrors"></div>
+    <div id="productsTable"></div>
+    <div class="chatZone">
+      <h2>CENTRO DE MENSAJES</h2>
+      <div id="usersQty"></div>
+      <form id="userForm">
+        <div class="input-group my-3 mx-auto">
+          <span class="input-group-text">@</span>
+          <input type="email" class="form-control" id="inputEmail" name="email" placeholder="Ingrese su e-mail"
+            maxlength="50" value="<%= username %>" readonly required />
+          <button id="btn-log" type="submit" class="btn btn-danger">Login</button>
+        </div>
+        <div class="row">
+          <div class="col-md mb-3">
+            <input type="text" class="form-control" id="inputFirstName" name="firstName" placeholder="Ingrese su nombre"
+              required>
+          </div>
+          <div class="col-md mb-3">
+            <input type="text" class="form-control" id="inputLastName" name="lastName" placeholder="Ingrese su apellido"
+              required>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <input type="number" step="1" class="form-control" id="inputAge" name="age" placeholder="Ingrese su edad"
+              required>
+          </div>
+          <div class="col-md-8 mb-3">
+            <input type="text" class="form-control" id="inputAlias" name="alias" placeholder="Ingrese su alias"
+              required>
+          </div>
+        </div>
+        <div class="mb-3">
+          <input type="url" class="form-control" id="inputAvatar" name="avatar" placeholder="Ingrese su avatar (URL)"
+            required>
+        </div>
+      </form>
+      <div id="compression"></div>
+      <div id="messages-wrapper"></div>
+      <form id="messageForm" class="input-group my-3">
+        <input type="text" class="form-control" id="inputMessage" name="message" placeholder="Escriba un mensaje..."
+          autocomplete="off" required disabled />
+        <button id="btn-send" type="submit" class="btn btn-danger" disabled>Enviar</button>
+      </form>
+      <div id="messageErrors"></div>
+    </div>
+  </main>
+
+  <%- include("../partials/bootstrapScripts.ejs")  %>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/normalizr@3.6.1/dist/normalizr.browser.min.js"></script>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="/js/index.js"></script>
+</body>
+
+</html>
