@@ -125,3 +125,43 @@ Debido a la característica minimalista de **Koa**, fue necesario instalar de ma
 
 A fin de no introducir cambios en como se pensó la API originalmente (según se fue pidiendo en algún desafío), mantuve la autenticación requerida sobre la misma para poder operar. Por lo que antes de llegar al middleware de `graphqlHTTP`, permanece el middleware `isAuthApi` que comprueba que nos encontremos autenticados. De no ser así se devuelve un mensaje de error indicando esto.  
 Lo mismo con las rutas protegidas del web server en donde el middleware `isAuthWeb` está presente.
+
+Por útlimo hice una prueba de stress en dos rutas del servidor **Koa** para verificar una de sus cualidades, que hace referencia a ser uno de los frameworks más rápidos del mercado.
+Para ello comparé las mismas rutas con la misma lógica asociada, primero con **Express** y luego con **Koa**.
+En ambos casos el servidor fue levantado usando el siguiente comando:
+
+```bash
+PERS=mongodb npm start
+```
+
+Los resultados son notables y muestran un rendimiento **30% superior** usando en framework **Koa** vs **Express**
+
+Los resultados:
+
+**Express** **GET** http://localhost:8080/api?query=%7B%0A%20%20products%20%7B%0A%20%20%20%20id%0A%20%20%20%20title%0A%20%20%20%20price%0A%20%20%20%20thumbnail%0A%20%20%20%20timestamp%0A%20%20%7D%0A%7D%0A
+
+<div>
+  <img src="docs/express-api-productos.png" alt="Resultados del test"/>
+</div>
+<br/>
+
+**Koa** **GET** http://localhost:8080/api?query=%7B%0A%20%20products%20%7B%0A%20%20%20%20id%0A%20%20%20%20title%0A%20%20%20%20price%0A%20%20%20%20thumbnail%0A%20%20%20%20timestamp%0A%20%20%7D%0A%7D%0A
+
+<div>
+  <img src="docs/koa-api-productos.png" alt="Resultados del test"/>
+</div>
+<br/>
+
+**Express** **GET** http://localhost:8080/info
+
+<div>
+  <img src="docs/express-info.png" alt="Resultados del test"/>
+</div>
+<br/>
+
+**Koa** **GET** http://localhost:8080/info
+
+<div>
+  <img src="docs/koa-info.png" alt="Resultados del test"/>
+</div>
+<br/>
