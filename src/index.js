@@ -14,7 +14,7 @@ async function startServer() {
   const PORT = config.PORT;
 
   //Instancio servidor http y websocket
-  const httpServer = new Httpserver(app);
+  const httpServer = new Httpserver(app.callback());
   const io = new IoServer(httpServer);
 
   // Uso el adaptador de cluster

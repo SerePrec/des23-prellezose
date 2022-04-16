@@ -1,29 +1,17 @@
 import { logger } from "../logger/index.js";
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
 class Error404Controller {
-  getError404Api = (req, res, next) => {
-    logger.warn(
-      `ruta '${req.baseUrl + req.path}' método '${req.method}' no implementada`
-    );
-    res.status(404).json({
-      error: -2,
-      descripcion: `ruta '${req.baseUrl + req.path}' método '${
-        req.method
-      }' no implementada`
-    });
+  getError404Api = async (ctx, next) => {
+    logger.warn(`ruta '${ctx.path}' método '${ctx.method}' no implementada`);
+    ctx.status = 404;
+    ctx.body = {
+      error: "No existe el recurso",
+      descripcion: `ruta '${ctx.path}' método '${ctx.method}' no implementada`
+    };
   };
 
-  getError404Web = (req, res, next) => {
-    logger.warn(
-      `ruta '${req.baseUrl + req.path}' método '${req.method}' no implementada`
-    );
-    res.sendFile("404.html", {
-      root: path.join(__dirname, "..", "views")
-    });
+  getError404Web = async (ctx, next) => {
+    logger.warn(`ruta '${ctx.path}' método '${ctx.method}' no implementada`);
+    await ctx.render("404");
   };
 }
 
