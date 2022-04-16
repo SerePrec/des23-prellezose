@@ -1,6 +1,7 @@
 import Router from "koa-router";
 import { buildSchema } from "graphql";
 import { graphqlHTTP } from "koa-graphql";
+import { isAuthApi } from "../middlewares/auth.js";
 import ApiProductosController from "../controllers/apiProductosController.js";
 import ApiTestsController from "../controllers/apiTestsController.js";
 import ApiRandomsController from "../controllers/apiRandomsController.js";
@@ -67,6 +68,7 @@ class ApiRouter {
 
     router.all(
       "/",
+      isAuthApi,
       graphqlHTTP({
         schema: schema,
         rootValue: root,

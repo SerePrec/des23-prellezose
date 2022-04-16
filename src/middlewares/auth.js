@@ -1,20 +1,19 @@
-const isAuthWeb = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return next();
+const isAuthWeb = async (ctx, next) => {
+  if (ctx.isAuthenticated()) {
+    return await next();
   }
-  res.redirect("/login");
+  ctx.redirect("/login");
 };
 
-const isAuthApi = (req, res, next) => {
-  if (req.isAuthenticated()) {
-    return next();
+const isAuthApi = async (ctx, next) => {
+  if (ctx.isAuthenticated()) {
+    return await next();
   }
-  res.status(401).json({
+  ctx.status = 401;
+  ctx.body = {
     error: "No autenticado",
-    descripcion: `ruta '${req.baseUrl + req.path}' método '${
-      req.method
-    }' necesita autenticación`
-  });
+    descripcion: `ruta '${ctx.path}' método '${ctx.method}' necesita autenticación`
+  };
 };
 
 export { isAuthWeb, isAuthApi };

@@ -14,7 +14,6 @@
   "dependencies": {
     "@socket.io/cluster-adapter": "^0.1.0",
     "bcrypt": "^5.0.1",
-    "connect-mongo": "^4.6.0",
     "dotenv": "^10.0.0",
     "faker": "^5.5.3",
     "graphql": "^15.3.0",
@@ -24,7 +23,9 @@
     "koa-compress": "^5.1.0",
     "koa-ejs": "^4.3.0",
     "koa-graphql": "^0.12.0",
+    "koa-passport": "^4.1.4",
     "koa-router": "^10.1.1",
+    "koa-session": "^6.2.0",
     "koa-static": "^5.0.0",
     "minimist": "^1.2.5",
     "mongoose": "^6.1.5",

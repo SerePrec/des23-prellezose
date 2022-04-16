@@ -1,4 +1,4 @@
-import { Router } from "express";
+import Router from "koa-router";
 import { validateRegisterPost } from "../middlewares/validateWebData.js";
 import {
   passportAuthLogin,
@@ -6,7 +6,7 @@ import {
 } from "../middlewares/passport.js";
 import AuthController from "../controllers/authController.js";
 
-const router = Router();
+const router = new Router();
 
 class AuthRouter {
   constructor() {
@@ -32,4 +32,4 @@ class AuthRouter {
   }
 }
 
-export default new AuthRouter();
+export default AuthRouter;

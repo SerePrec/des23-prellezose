@@ -1,4 +1,4 @@
-import passport from "passport";
+import passport from "koa-passport";
 import { Strategy as LocalStrategy } from "passport-local";
 import AuthUserService from "../services/authUserService.js";
 

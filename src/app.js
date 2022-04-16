@@ -3,15 +3,21 @@ import render from "koa-ejs";
 import koaBody from "koa-body";
 import koaCompress from "koa-compress";
 import serve from "koa-static";
+import session from "koa-session";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import zlib from "zlib";
+import config from "./config.js";
+import { passport } from "./middlewares/passport.js";
+import AuthRouter from "./routes/authRouter.js";
 import ApiRouter from "./routes/apiRouter.js";
 import Error404Controller from "./controllers/error404Controller.js";
 import { logger } from "./logger/index.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
 const error404Controller = new Error404Controller();
+const authRouter = new AuthRouter();
 const apiRouter = new ApiRouter();
 
 const app = new Koa();
@@ -53,7 +59,25 @@ app.use(async (ctx, next) => {
 // servir archivos estáticos
 app.use(serve(path.join(__dirname, "public")));
 
+// sesiones. SESSION STORE: MONGOSTORE
+app.keys = [config.session.options.secret];
+app.use(
+  session(
+    {
+      //store: MongoStore.create(config.session.mongoStoreOptions),
+      rolling: config.session.options.rolling,
+      secure: false
+    },
+    app
+  )
+);
+
+// passport
+app.use(passport.initialize());
+app.use(passport.session());
+
 // routers
+app.use(authRouter.start().routes());
 app.use(apiRouter.start().routes());
 
 // error 404 WEB
