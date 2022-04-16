@@ -10,6 +10,7 @@ import zlib from "zlib";
 import config from "./config.js";
 import { passport } from "./middlewares/passport.js";
 import AuthRouter from "./routes/authRouter.js";
+import WebServerRouter from "./routes/webServerRouter.js";
 import ApiRouter from "./routes/apiRouter.js";
 import Error404Controller from "./controllers/error404Controller.js";
 import { logger } from "./logger/index.js";
@@ -17,8 +18,9 @@ import { logger } from "./logger/index.js";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const error404Controller = new Error404Controller();
-const authRouter = new AuthRouter();
 const apiRouter = new ApiRouter();
+const authRouter = new AuthRouter();
+const webServerRouter = new WebServerRouter();
 
 const app = new Koa();
 
@@ -78,26 +80,10 @@ app.use(passport.session());
 
 // routers
 app.use(authRouter.start().routes());
+app.use(webServerRouter.start().routes());
 app.use(apiRouter.start().routes());
 
 // error 404 WEB
 app.use(error404Controller.getError404Web);
-
-app.use(async ctx => {
-  const info = {
-    title: "App Info",
-    SO: process.platform,
-    nodeVersion: process.version,
-    execPath: process.execPath,
-    proyectPath: process.cwd(),
-    args:
-      process.argv.length > 2 ? process.argv.slice(2).join(", ") : "ninguno",
-    pid: process.pid,
-    rss: Math.round(process.memoryUsage().rss / 1024),
-    CPUs: 20
-  };
-  await ctx.render("./pages/appInfo", info);
-  //ctx.body = "holla";
-});
 
 export default app;

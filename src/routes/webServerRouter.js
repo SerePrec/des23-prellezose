@@ -1,8 +1,8 @@
-import { Router } from "express";
+import Router from "koa-router";
 import { isAuthWeb } from "../middlewares/auth.js";
 import WebServerController from "../controllers/webServerController.js";
 
-const router = Router();
+const router = new Router();
 
 class WebServerRouter {
   constructor() {
@@ -24,4 +24,4 @@ class WebServerRouter {
   }
 }
 
-export default new WebServerRouter();
+export default WebServerRouter;

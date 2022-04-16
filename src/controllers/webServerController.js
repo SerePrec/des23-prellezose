@@ -1,31 +1,25 @@
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
 import config from "../config.js";
 
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
 class WebServerController {
-  getHome = (req, res) => {
-    const { messages } = req.session;
+  getHome = async ctx => {
+    const { messages } = ctx.session;
     let message;
     if (messages) {
-      req.session.messages = [];
+      ctx.session.messages = [];
       message = messages[messages.length - 1];
     }
-    res.render("./pages/home", {
+    await ctx.render("./pages/home", {
       title: "Carga de productos y Chat",
-      username: req.user?.username,
+      username: ctx.state.user?.username,
       successRegister: message
     });
   };
 
-  getProductosMock = (req, res) => {
-    res.sendFile("productos-mock.html", {
-      root: path.join(__dirname, "..", "views")
-    });
+  getProductosMock = async ctx => {
+    await ctx.render("productos-mock");
   };
 
-  showAppInfo = (req, res) => {
+  showAppInfo = async ctx => {
     const info = {
       title: "App Info",
       SO: process.platform,
@@ -38,7 +32,7 @@ class WebServerController {
       rss: Math.round(process.memoryUsage().rss / 1024),
       CPUs: config.numCPUs
     };
-    res.render("./pages/appInfo", info);
+    await ctx.render("./pages/appInfo", info);
   };
 }
 

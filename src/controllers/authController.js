@@ -1,8 +1,3 @@
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
 class AuthController {
   getLogin = async ctx => {
     if (ctx.isAuthenticated()) return ctx.redirect("/");
@@ -40,19 +35,18 @@ class AuthController {
     });
   };
 
-  getLogout = (req, res) => {
-    if (req.isAuthenticated()) {
-      const { username } = req.user;
-      req.logout();
-      req.session.destroy(err => {
-        if (!err) {
-          res.clearCookie("connect.sid");
-          return res.render("./pages/logout", { title: "Logout", username });
-        }
-        res.redirect("/");
+  getLogout = async ctx => {
+    if (ctx.isAuthenticated()) {
+      const { username } = ctx.state.user;
+      ctx.logout();
+      ctx.session = null;
+      ctx.cookies.set("koa.sess", null, { signed: true });
+      return await ctx.render("./pages/logout", {
+        title: "Logout",
+        username
       });
     } else {
-      res.redirect("/");
+      ctx.redirect("/");
     }
   };
 }
