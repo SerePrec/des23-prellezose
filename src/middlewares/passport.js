@@ -8,7 +8,7 @@ passport.use(
   "register",
   new LocalStrategy(
     { passReqToCallback: true },
-    async (req, username, password, done) => {
+    async (request, username, password, done) => {
       return authUserService.verifyRegister({}, username, password, done);
     }
   )
