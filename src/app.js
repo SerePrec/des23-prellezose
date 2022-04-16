@@ -8,12 +8,12 @@ import MongooseStore from "koa-session-mongoose";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import zlib from "zlib";
-import config from "./config.js";
 import { passport } from "./middlewares/passport.js";
+import ApiRouter from "./routes/apiRouter.js";
 import AuthRouter from "./routes/authRouter.js";
 import WebServerRouter from "./routes/webServerRouter.js";
-import ApiRouter from "./routes/apiRouter.js";
 import Error404Controller from "./controllers/error404Controller.js";
+import config from "./config.js";
 import { logger } from "./logger/index.js";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));

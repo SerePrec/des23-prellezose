@@ -1,22 +1,16 @@
-# Desafío 22 - Programación Backend
+# Desafío 23 - Programación Backend
 
 ### CoderHouse
 
-## REFORMAR PARA USAR GRAPHQL
+## REFORMAR PARA USAR OTRO FRAMEWORK (Koa)
 
-Refactoricemos el código del proyecto que venimos trabajando para cambiar de API RESTful a GraphQL API.
+Retomar el proyecto con el que vemos trabajando para trasladarlo a uno de los frameworks presentados
 
 ### Consigna
 
-En base al último proyecto entregable de servidor API RESTful, reformar la capa de routeo y el controlador para que los requests puedan ser realizados a través del lenguaje de query GraphQL.
+Elegir uno de los frameworks vistos en clase y trasladar a esta nueva plataforma el último proyecto entregable (con GraphQL) o al anterior (sin GraphQL).
 
-Si tuviésemos un frontend, reformarlo para soportar GraphQL y poder dialogar apropiadamente con el backend y así realizar las distintas operaciones de pedir, guardar, actualizar y borrar recursos.
-
-Utilizar GraphiQL para realizar la prueba funcional de los querys y las mutaciones.
-
-### Deploy en Heroku (Temporal):
-
-https://des22-prellezose.herokuapp.com/
+Verificar el correcto funcionamiento del servidor a nivel de sus rutas, vistas, lógica de negocio y persistencia.
 
 ### Ejecución
 
@@ -113,56 +107,21 @@ Cuando nos encontramos en el ambiente de **desarrollo**, en esta misma ruta se o
 
 ### Detalles y comentarios
 
-Se migró toda la API REST a una **API GraphQL**. Por lo que los endpoints de productos, productos-mock y números randoms, fueron fusionados en la ruta `/api` cuyo esquema se mostró más arriba.
+Opté por migrar el proyecto al framework **Koa**.
 
-Los cambios principales se centraron en el router y controladores.  
-Los routers individuales fueron reemplazados por un único router que reúne toda la funcionalidad.  
-Los controladores fueron modificados para tomar por parámetro los datos como GraphQL los provee y devolver las respuestas adecuadas también para que GraphQL las procese y exponga. Es decir, no están más presentes en ellos los objetos **req y res**.
+Fue la capa de ruteo (servidor, routers,middlewares y controllers) la que sufrió los cambios, ya que el resto de las capas (servicio, modelo, presentación) son ajenas al framework en cuestión.
 
-A fin de no introducir cambios en como se pensó la API originalmente (según se fue pidiendo en algún desafío), mantuve la autenticación requerida sobre la misma para poder operar. Por lo que antes de llegar al middleware de `graphqlHTTP`, permanece el middleware `isAuth` que comprueba que nos encontremos autenticados. De no ser así se devuelve un mensaje de error indicando esto.
+Debido a la característica minimalista de **Koa**, fue necesario instalar de manera separada cada middleware requerido para mantener las mismas funcionalidades que antes. Entre ellos se encuentran:
 
-Por el lado del front, el home continúa como fue pedido en desafíos anteriores, en donde la carga de productos y mensajes se hace utilizando **websockets**, por lo que no fueron necesarios cambios para continuar operando.  
-Los cambios fueron se realizaron sobre la vista **/productos-mock**, en donde se hacía una llamada a la api respectiva para generar el listado. En este caso las peticiones **fetch** fueron re adecuadas incluyendo el query respectivo para GraphQL.
+- koa-body
+- koa-compress
+- koa-ejs
+- koa-graphql
+- koa-passport
+- koa-router
+- koa-session
+- koa-session-mongoose
+- koa-static
 
-Hice algunas pruebas sobre la api GraphQL que muestro a continuación. Utilicé GraphiQL y postman a tal fin.
-
-Query products
-
-<div align="center">
-  <img src="docs/query-products.png" alt="Resultados del query"/>
-</div>
-<br/>
-
-Query product por id 6238c664082cb0424fa197a4
-
-<div align="center">
-  <img src="docs/query-product.png" alt="Resultados del query"/>
-</div>
-<br/>
-
-Query randoms con cantidad = 5
-
-<div align="center">
-  <img src="docs/query-randoms.png" alt="Resultados del query"/>
-</div>
-<br/>
-
-Mutation createProduct
-
-<div align="center">
-  <img src="docs/mutation-create.png" alt="Resultados del query"/>
-</div>
-<br/>
-
-Mutation updateProduct
-
-<div align="center">
-  <img src="docs/mutation-update.png" alt="Resultados del query"/>
-</div>
-<br/>
-
-Mutation deleteProduct
-
-<div align="center">
-  <img src="docs/mutation-delete.png" alt="Resultados del query"/>
-</div>
+A fin de no introducir cambios en como se pensó la API originalmente (según se fue pidiendo en algún desafío), mantuve la autenticación requerida sobre la misma para poder operar. Por lo que antes de llegar al middleware de `graphqlHTTP`, permanece el middleware `isAuthApi` que comprueba que nos encontremos autenticados. De no ser así se devuelve un mensaje de error indicando esto.  
+Lo mismo con las rutas protegidas del web server en donde el middleware `isAuthWeb` está presente.
