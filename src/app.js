@@ -4,6 +4,7 @@ import koaBody from "koa-body";
 import koaCompress from "koa-compress";
 import serve from "koa-static";
 import session from "koa-session";
+import MongooseStore from "koa-session-mongoose";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import zlib from "zlib";
@@ -62,13 +63,12 @@ app.use(async (ctx, next) => {
 app.use(serve(path.join(__dirname, "public")));
 
 // sesiones. SESSION STORE: MONGOSTORE
-app.keys = [config.session.options.secret];
+app.keys = [config.session.secret];
 app.use(
   session(
     {
-      //store: MongoStore.create(config.session.mongoStoreOptions),
-      rolling: config.session.options.rolling,
-      secure: false
+      store: new MongooseStore(),
+      ...config.session.options
     },
     app
   )
